@@ -26,6 +26,13 @@ function Register() {
         theme: "dark",
     }
 
+     // Checks to see if the user is already logged in by checking if the chat-app-user key,value is in localStorage
+     useEffect(() => {
+        if (localStorage.getItem('chat-app-user')) {
+            navigate("/");
+        }
+    }, [])
+
     const handleSubmit = async (event) => {
         event.preventDefault();
         if (handleValidation()) {
@@ -38,10 +45,9 @@ function Register() {
             });
             if (data.status === false) {
                 toast.error(data.msg, toastOptions);
-                console.log("gay");
             }
             if (data.status === true) {
-                localStorage.setItem('chat-app-user', JSON.stringify(data.username));
+                localStorage.setItem('chat-app-user', JSON.stringify(data.user));
                 navigate("/");
             }
         }
