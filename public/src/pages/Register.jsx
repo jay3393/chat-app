@@ -24,14 +24,14 @@ function Register() {
         pauseOnHover: true,
         draggable: true,
         theme: "dark",
-    }
+    };
 
      // Checks to see if the user is already logged in by checking if the chat-app-user key,value is in localStorage
      useEffect(() => {
         if (localStorage.getItem('chat-app-user')) {
             navigate("/");
         }
-    }, [])
+    }, []);
 
     const handleSubmit = async (event) => {
         event.preventDefault();
