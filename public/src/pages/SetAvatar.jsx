@@ -30,7 +30,7 @@ export default function SetAvatar() {
         }
     }, []);
 
-    const setProfilePicture = async ()=> {
+    const setProfilePicture = async () => {
         if (selectedAvatar === undefined) {
             toast.error("Please select an avatar", toastOptions);
         } else {
@@ -39,6 +39,7 @@ export default function SetAvatar() {
                 image: avatars[selectedAvatar],
             });
 
+            console.log(data);
             if (data.isSet) {
                 user.isAvatarImageSet = true;
                 user.avatarImage = data.image;

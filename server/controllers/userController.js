@@ -10,12 +10,12 @@ module.exports.register = async (req, res, next) => {
         const emailExists = await User.findOne({ email });
         if (emailExists) return res.json({msg: "Email already in use", status: false});
         const hashedPassword = await bcrypt.hash(password, 10);
-        const user = User.create({
+        const user = await User.create({
             username,
             email,
             password: hashedPassword,
         });
-        console.log(`${username} successfully registered`);
+        console.log(`${user.username} successfully registered`);
         delete user.password;
         return res.json({status: true, user});
     } catch (exception) {
@@ -42,3 +42,36 @@ module.exports.login = async (req, res, next) => {
         next(exception);
     }
 };
+
+module.exports.setAvatar = async (req, res, next) => {
+    try {
+        const userId = req.params.id;
+        const avatarImage = req.body.image;
+        const userData = await User.findByIdAndUpdate(userId, {
+            isAvatarImageSet: true,
+            avatarImage,
+        }, {new: true});
+        return res.json({
+            isSet: userData.isAvatarImageSet,
+            image: userData.avatarImage,
+        });
+    } catch (exception) {
+        next(exception);
+    }
+}
+
+module.exports.getAllUsers = async (req, res, next) => {
+    try {
+        // Get all user ids in db except current user (req.params.id)
+        // Can be done with $ne: <id>
+        const users = await User.find({_id: {$ne: req.params.id }}).select([
+            "email",
+            "username",
+            "avatarImage",
+            "_id",
+        ]);
+        return res.json(users);
+    } catch (exception) {
+        next(exception);
+    }
+}

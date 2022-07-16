@@ -47,7 +47,8 @@ function Register() {
                 toast.error(data.msg, toastOptions);
             }
             if (data.status === true) {
-                localStorage.setItem('chat-app-user', JSON.stringify(data.user));
+                console.log(data);
+                localStorage.setItem("chat-app-user", JSON.stringify(data.user));
                 navigate("/");
             }
         }
@@ -72,7 +73,7 @@ function Register() {
     };
 
     const handleChange = (event) => {
-        setValues({...values, [event.target.name]: event.target.value}, console.log(values));
+        setValues({...values, [event.target.name]: event.target.value});
     };
 
   return (
