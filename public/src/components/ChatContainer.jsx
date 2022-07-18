@@ -5,6 +5,7 @@ import ChatInput from "./ChatInput";
 import Messages from "./Messages";
 import axios from "axios";
 import { sendMessageRoute, getAllMessageRoute } from "../utils/APIRoutes";
+import NewContact from "./NewContact";
 
 export default function ChatContainer({currentChat, currentUser}) {
     
@@ -49,8 +50,8 @@ export default function ChatContainer({currentChat, currentUser}) {
                     <Logout />
                 </div>
                 <div className="chat-messages">
-                    {
-                        messages.map((message) => {
+                    {messages.length > 0 ?
+                        (messages.map((message) => {
                             return (
                                 <div>
                                     <div className={`message ${message.fromSelf? "sent": "received"}`}>
@@ -62,7 +63,10 @@ export default function ChatContainer({currentChat, currentUser}) {
                                     </div>
                                 </div>
                             );
-                        })
+                        })):
+                        (
+                            <NewContact currentChat={currentChat} />
+                        )
                     }
                 </div>
                 <ChatInput handleSendMsg={handleSendMsg} />
@@ -114,6 +118,15 @@ const Container = styled.div`
         flex-direction: column;
         gap: 1rem;
         overflow: auto;
+
+        &::-webkit-scrollbar {
+            width: 0.2rem;
+            &-thumb {
+                background-color: #ffffff39;
+                width: 0.1rem;
+                border-radius: 1rem;
+            }
+        }
 
         .message {
             display: flex;
