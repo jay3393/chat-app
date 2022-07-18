@@ -1,6 +1,13 @@
 {
   "dependencies": {
     "buffer": "^6.0.3",
-    "react-toastify": "^9.0.5"
+    "react-toastify": "^9.0.5",
+    "socket.io": "^4.5.1"
+  },
+  "scripts": {
+    "start": "cd server && npm start && cd ../public && npm start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
   }
 }
