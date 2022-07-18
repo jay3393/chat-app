@@ -43,11 +43,6 @@ function Chat() {
     fetchUsers();
   }, [currentUser]);
 
-  const logout = () => {
-    localStorage.removeItem("chat-app-user");
-    navigate("/login");
-  };
-
   const handleChatChange = (chat) => {
     setCurrentChat(chat);
   };
@@ -69,7 +64,7 @@ function Chat() {
             {isLoaded && currentChat === undefined ? (
               <Welcome currentUser={currentUser} />
             ) : (
-              <ChatContainer currentChat={currentChat} />
+              <ChatContainer currentChat={currentChat} currentUser={currentUser} />
             )
             }
           </div>

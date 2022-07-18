@@ -111,7 +111,6 @@ const Container = styled.div`
 
         input {
             width: 90%;
-            height: 60%;
             background-color: transparent;
             color: white;
             border: none;

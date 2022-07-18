@@ -1,13 +1,34 @@
-import React from "react";
+import React, {useState, useEffect} from "react";
 import styled from "styled-components";
 import Logout from "./Logout";
 import ChatInput from "./ChatInput";
 import Messages from "./Messages";
+import axios from "axios";
+import { sendMessageRoute, getAllMessageRoute } from "../utils/APIRoutes";
 
-export default function ChatContainer({currentChat}) {
+export default function ChatContainer({currentChat, currentUser}) {
+    
+    const [messages, setMessages] = useState([]);
+
+    useEffect(() => {
+        async function fetchMessages() {
+            const messages = await axios.post(getAllMessageRoute, {
+                from: currentUser._id,
+                to: currentChat._id,
+            });
+            setMessages(messages.data);
+        }
+        fetchMessages();
+    }, [currentChat]);
+
     const handleSendMsg = async (msg) => {
-
+        await axios.post(sendMessageRoute, {
+            from: currentUser._id,
+            to: currentChat._id,
+            message: msg,
+        });
     };
+
   return (
     <>  
         {currentChat &&
@@ -27,7 +48,23 @@ export default function ChatContainer({currentChat}) {
                     </div>
                     <Logout />
                 </div>
-                <Messages />
+                <div className="chat-messages">
+                    {
+                        messages.map((message) => {
+                            return (
+                                <div>
+                                    <div className={`message ${message.fromSelf? "sent": "received"}`}>
+                                        <div className="content">
+                                            <p>
+                                                {message.message}
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            );
+                        })
+                    }
+                </div>
                 <ChatInput handleSendMsg={handleSendMsg} />
             </Container>
         )
@@ -38,6 +75,13 @@ export default function ChatContainer({currentChat}) {
 
 const Container = styled.div`
     padding-top: 1rem;
+    display: grid;
+    grid-template-rows: 10% 78% 12%;
+    gap: 0.1rem;
+    overflow: hidden;
+    @media screen and (min-width: 720px) and (max-width: 1080px) {
+        grid-auto-rows: 15% 70% 15%;
+    }
 
     .chat-header {
         display: flex;
@@ -60,6 +104,44 @@ const Container = styled.div`
                 h3 {
                     color: white;
                 }
+            }
+        }
+    }
+
+    .chat-messages {
+        padding: 1rem 2rem;
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        overflow: auto;
+
+        .message {
+            display: flex;
+            align-items: center;
+
+            .content {
+                max-width: 40%;
+                overflow-wrap: break-word;
+                padding: 1rem;
+                font-size: 1.1rem;
+                border-radius: 1rem;
+                color: #d1d1d1d1;
+            } 
+        }
+
+        .sent {
+            justify-content: flex-end;
+
+            .content {
+                background-color: #4f04ff21;
+            }
+        }
+
+        .received {
+            justify-content: flex-start;
+
+            .content {
+                background-color: #9900ff20;
             }
         }
     }
