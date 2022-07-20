@@ -17,6 +17,10 @@ app.use(express.static(path.join(__dirname, '../public/build')));
 app.use("/api/auth", userRoutes);
 app.use("/api/messages", messageRoutes);
 
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, '../public/build/index.html'));
+});
+
 mongoose.connect(process.env.MONGO_URL, {
     useNewUrlParser: true,
     useUnifiedTopology: true
