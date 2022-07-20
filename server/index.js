@@ -4,12 +4,15 @@ const mongoose = require('mongoose');
 const userRoutes = require('./routes/userRoute');
 const messageRoutes = require('./routes/messageRoute')
 const socket = require('socket.io');
+const path = require('path');
 
 const app = express();
 require('dotenv').config();
 
 app.use(cors());
 app.use(express.json());
+
+app.use(express.static(path.join(__dirname, '../public/build')));
 
 app.use("/api/auth", userRoutes);
 app.use("/api/messages", messageRoutes);

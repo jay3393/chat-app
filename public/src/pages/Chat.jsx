@@ -1,7 +1,7 @@
 import { React, useState, useEffect, useRef } from 'react';
 import styled from "styled-components";
 import axios from "axios";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { allUsersRoute, host } from '../utils/APIRoutes';
 import Contacts from '../components/Contacts';
 import Loader from '../assets/loader.gif';
